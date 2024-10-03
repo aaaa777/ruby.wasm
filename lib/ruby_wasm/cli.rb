@@ -129,6 +129,10 @@ module RubyWasm
           opts.on("--print-ruby-cache-key", "Print Ruby cache key") do
             options[:print_ruby_cache_key] = true
           end
+
+          opts.on("--disable-vfs", "Disable WASI-VFS but native extension is still linked") do
+            options[:disable_vfs] = true
+          end
         end
         .parse!(args)
 
