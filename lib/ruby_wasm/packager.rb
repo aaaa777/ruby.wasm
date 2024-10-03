@@ -50,9 +50,9 @@ class RubyWasm::Packager
         wasi_vfs = RubyWasmExt::WasiVfs.new
         wasi_vfs.map_dir("/bundle", fs.bundle_dir)
         wasi_vfs.map_dir("/usr", File.dirname(fs.ruby_root))
+        
+        wasm_bytes = wasi_vfs.pack(wasm_bytes)
       end
-
-      wasm_bytes = wasi_vfs.pack(wasm_bytes)
     end
     wasm_bytes = ruby_core.link_gem_exts(executor, fs.ruby_root, fs.bundle_dir, wasm_bytes)
 
