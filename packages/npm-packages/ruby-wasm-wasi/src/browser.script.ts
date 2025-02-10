@@ -5,11 +5,12 @@ import { RubyInitComponentOptions, RubyComponentInstantiator, RubyVM } from "./v
  * The main entry point of `<script type="text/ruby">`-based scripting with WebAssembly Core Module.
  */
 export const main = async (
-  pkg: { name: string; version: string },
+  pkg: { name: string; version: string, url: string },
   options?: Parameters<typeof DefaultRubyVM>[1],
 ) => {
   const response = fetch(
-    `https://cdn.jsdelivr.net/npm/${pkg.name}@${pkg.version}/dist/ruby+stdlib.wasm`,
+    // `https://cdn.jsdelivr.net/npm/${pkg.name}@${pkg.version}/dist/ruby+stdlib.wasm`,
+    pkg.url,
   );
   const module = await compileWebAssemblyModule(response);
   const { vm } = await DefaultRubyVM(module, options);
