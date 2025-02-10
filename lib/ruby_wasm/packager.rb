@@ -44,7 +44,9 @@ class RubyWasm::Packager
       fs.remove_stdlib(executor)
     end
 
-    if full_build_options[:target] == "wasm32-unknown-wasip1" && !features.support_component_model?
+    if full_build_options[:target] == "wasm32-unknown-wasip1"
+      && !features.support_component_model?
+      
       # wasi-vfs supports only WASI target
       wasi_vfs = RubyWasmExt::WasiVfs.new
       wasi_vfs.map_dir("/bundle", fs.bundle_dir)
