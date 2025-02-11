@@ -44,15 +44,20 @@ class RubyWasm::Packager
       fs.remove_stdlib(executor)
     end
 
-    if full_build_options[:target] == "wasm32-unknown-wasip1"
-      && !features.support_component_model?
+    if full_build_options[:target] == "wasm32-unknown-wasip1" && !features.support_component_model?
       
-      # wasi-vfs supports only WASI target
-      wasi_vfs = RubyWasmExt::WasiVfs.new
-      wasi_vfs.map_dir("/bundle", fs.bundle_dir)
-      wasi_vfs.map_dir("/usr", File.dirname(fs.ruby_root))
+      # disable vfs patch
+      if full_build_options[:disable_wasi_vfs]
+        RubyWasm.logger.debug "Skipping WASI VFS"
+      else
 
-      wasm_bytes = wasi_vfs.pack(wasm_bytes)
+        # wasi-vfs supports only WASI target
+        wasi_vfs = RubyWasmExt::WasiVfs.new
+        wasi_vfs.map_dir("/bundle", fs.bundle_dir)
+        wasi_vfs.map_dir("/usr", File.dirname(fs.ruby_root))
+
+        wasm_bytes = wasi_vfs.pack(wasm_bytes)
+      end
     end
     wasm_bytes = ruby_core.link_gem_exts(executor, fs.ruby_root, fs.bundle_dir, wasm_bytes)
 

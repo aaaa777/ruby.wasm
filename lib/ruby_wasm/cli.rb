@@ -56,6 +56,7 @@ module RubyWasm
         without_stdlib_components: [],
         dest_dir: nil,
         disable_gems: false,
+        disable_wasi_vfs: false,
         gemfile: nil,
         patches: [],
       }
@@ -112,6 +113,10 @@ module RubyWasm
 
           opts.on("--disable-gems", "Disable gems") do
             options[:disable_gems] = true
+          end
+
+          opts.on("--disable-wasi-vfs", "Disable wasi-vfs") do
+            options[:disable_wasi_vfs] = true
           end
 
           opts.on("--dest-dir PATH", "(Experimental) Destination directory") do |path|
