@@ -22,6 +22,8 @@ module RubyWasm
         return RubyWasm::WASISDK.new(build_dir: build_dir)
       when "wasm32-unknown-emscripten"
         return RubyWasm::Emscripten.new
+      when "js-unknown-asmjs"
+        return RubyWasm::AsmJs.new
       else
         raise "unknown target: #{target}"
       end
@@ -189,6 +191,13 @@ module RubyWasm
     def find_tool(name)
       Toolchain.check_executable(@tools[name])
       @tools[name]
+    end
+  end
+
+  class AsmJs < Emscripten
+    def initialize
+      super
+      @name = "asmjs"
     end
   end
 end
